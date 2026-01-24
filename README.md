@@ -28,16 +28,6 @@ Aprendí montando y rompiendo en labs y proyectos reales; hoy trabajo para que l
 
 ---
 
-### 📊 Proyecto: Observabilidad-Orquestación
-
-**Reto:** Integrar observabilidad completa (logs + métricas) sobre entornos Azure gestionados por IaC.  
-**Solución:** Dockerizado con Prometheus + Grafana + Alertmanager; playbooks Ansible para auto-configuración; métricas de health en pipelines.  
-**Impacto:** Visibilidad 24/7 y alertas automáticas en menos de 1 min de inactividad.  
-**Stack:** Terraform · Ansible · Docker · Prometheus · Grafana · GitHub Actions · Azure OIDC  
-**Código:** [Repositorio](https://github.com/S4M73l09/Obversabilidad-Obversility)
-
----
-
 ### 🧱 Proyecto: Scripts Dominio Windows Core
 
 **Reto:** Automatizar la creación de un dominio AD DS en Windows Server Core sin interfaz gráfica.  

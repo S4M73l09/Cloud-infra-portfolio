@@ -26,16 +26,6 @@ Technical portfolio as a freelance **DevOps** specialist in infrastructure autom
 
 ---
 
-## 📊 Project: Observability & Orchestration 
-
-**Challenge:** Implement full-stack observability (logs and metrics) for Azure IaC-managed environments.  
-**Solution:** Dockerized Prometheus, Grafana, and Alertmanager; automated setup with Ansible; integrated health checks in GitHub Actions pipelines.  
-**Impact:** 24/7 visibility and automated alerts within 1 minute of downtime.  
-**Stack:** Terraform · Ansible · Docker · Prometheus · Grafana · Azure OIDC · CI/CD  
-**Code:** [Repository](https://github.com/S4M73l09/Obversabilidad-Obversility)
-
----
-
 ## 🧱 Project: Windows Core Domain Scripts
 
 **Challenge:** Automate the creation of an Active Directory Domain on Windows Server Core (no GUI).  

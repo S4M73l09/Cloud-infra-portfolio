@@ -101,30 +101,6 @@ const AI_KB = [
     answer_en:
       'The Windows Core Domain Scripts project contains PowerShell scripts to automate the creation and configuration of a domain on Windows Server Core.'
   },
-  {
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    tags: ['stack', 'tecnologias', 'tecnologías', 'skills', 'devops', 'que sabes', 'habilidades', 'observabilidad'],
-    summary_es:
-      'El repositorio de observabilidad resume tu stack orientado a monitorización y buenas prácticas DevOps, combinando infraestructura como código, CI/CD, contenedores y herramientas de métricas y dashboards.',
-    summary_en:
-      'The observability repository summarizes your stack focused on monitoring and DevOps best practices, combining infrastructure as code, CI/CD, containers and metrics/dashboard tools.',
-    deploy_es:
-      'Los componentes de observabilidad (exporters, Prometheus, Grafana, Alertmanager) se despliegan normally a través de Docker y Ansible, integrados en pipelines de GitHub Actions y definidos con Terraform donde aplica.',
-    deploy_en:
-      'The observability components (exporters, Prometheus, Grafana, Alertmanager) are usually deployed through Docker and Ansible, integrated into GitHub Actions pipelines and defined with Terraform where it applies.',
-    monitor_es:
-      'Tu enfoque de observabilidad se basa en Prometheus para métricas, Alertmanager para alertas y Grafana para dashboards, siguiendo un modelo pull con exporters en las VMs y paneles personalizados para ver el estado de la infraestructura y servicios.',
-    monitor_en:
-      'Your observability approach is based on Prometheus for metrics, Alertmanager for alerts and Grafana for dashboards, following a pull model with exporters on the VMs and custom panels to see infrastructure and service health.',
-    stack_es:
-      'Tu stack principal gira en torno a Terraform, Ansible, Docker, GitHub Actions (CI/CD), Prometheus, Grafana y Alertmanager, trabajando sobre clouds como Azure y GCP, además de Windows Server, scripting y VPNs como WireGuard.',
-    stack_en:
-      'Your main stack revolves around Terraform, Ansible, Docker, GitHub Actions (CI/CD), Prometheus, Grafana and Alertmanager, working on clouds such as Azure and GCP, plus Windows Server, scripting and VPNs like WireGuard.',
-    answer_es:
-      'Mi stack gira en torno a Terraform, Ansible, Docker, GitHub Actions (CI/CD), monitorización con Prometheus/Grafana y cloud (Azure y GCP). También tengo experiencia con Windows Server, scripting y VPNs como WireGuard.',
-    answer_en:
-      'My stack focuses on Terraform, Ansible, Docker, GitHub Actions (CI/CD), monitoring with Prometheus/Grafana and cloud (Azure and GCP). I also have experience with Windows Server, scripting and VPNs like WireGuard.'
-  }
 ];
 
 // --- README a cargar (raw GitHub) ---
@@ -188,26 +164,9 @@ const AI_DOC_SOURCES = [
     lang: 'en'
   },
 
-  // Observabilidad (main)
   {
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    url: 'https://raw.githubusercontent.com/S4M73l09/Obversabilidad-Obverssility/main/README.md',
-    lang: 'es'
-  },
-  {
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    url: 'https://raw.githubusercontent.com/S4M73l09/Obversabilidad-Obverssility/main/README.en.md',
-    lang: 'en'
-  },
-  // Observabilidad (rama prueba)
-  {
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    url: 'https://raw.githubusercontent.com/S4M73l09/Obversabilidad-Obverssility/prueba/README.md',
-    lang: 'es'
-  },
-  {
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    url: 'https://raw.githubusercontent.com/S4M73l09/Obversabilidad-Obverssility/prueba/README.en.md',
+    repo: 'https://github.com/S4M73l09/scripts-guia-windows',
+    url: 'https://raw.githubusercontent.com/S4M73l09/scripts-guia-windows/main/README.en.md',
     lang: 'en'
   }
 ];

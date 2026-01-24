@@ -197,11 +197,6 @@ const AI_PROJECTS = [
     name: { es: 'Servidor Jellyfin', en: 'Jellyfin Server' },
   },
   {
-    id: 'observabilidad',
-    repo: 'https://github.com/S4M73l09/Obversabilidad-Obverssility',
-    name: { es: 'Observabilidad', en: 'Observability' },
-  },
-  {
     id: 'windows-core',
     repo: 'https://github.com/S4M73l09/scripts-guia-windows',
     name: { es: 'Windows Core Scripts', en: 'Windows Core Scripts' },
