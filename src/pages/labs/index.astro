@@ -1,0 +1,32 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import LabProviderAccordion from '../../components/LabProviderAccordion.astro';
+import { getPortfolioContent, getPortfolioItems } from '../../domain/portfolio';
+
+const contentEs = getPortfolioContent('es');
+const labs = await getPortfolioItems('labs', 'es');
+---
+
+<MainLayout
+  title="Laboratorio | S4M73l09"
+  description="Experimentos y patrones de infraestructura para bootstrap y entornos live."
+  language="es"
+  pageEnterFromLeft={true}
+  showFloatingHomeButton={true}
+  floatingHomeHref="/"
+  floatingHomeLabel="Inicio"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/projects"
+  floatingSectionLabel="Proyectos"
+  langSwitchHref="/en/labs"
+  langSwitchLabel={contentEs.langLabel}
+>
+  <section class="hero">
+    <h1>{contentEs.labsTitle}</h1>
+    <p>Experimentos y patrones de infraestructura para bootstrap y entornos live.</p>
+  </section>
+
+  <section class="section">
+    <LabProviderAccordion labs={labs} language="es" />
+  </section>
+</MainLayout>

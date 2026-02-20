@@ -1,80 +1,92 @@
+# S4M73l09 Infra Portfolio (Astro)
 
+Este repositorio ha sido migrado a **Astro**.
 
-# S4M73l09-infra-portfolio
+Importante:
+- `README.md` y `README.en.md` ya **no** son fuente de datos para renderizar la web.
+- El contenido del sitio se mantiene en `src/content/*` y texto de UI en `src/domain/*`.
 
-Hola, soy Samuel. **DevOps** en Cloud: automatizo infraestructura con Terraform + Ansible y despliegues con CI/CD, dejando todo observable con Prometheus/Grafana.
-Aprendí montando y rompiendo en labs y proyectos reales; hoy trabajo para que los entornos sean reproducibles, seguros y documentados.
+## Stack
 
-<p data-contact> Enlaces de contacto abajo </p>
+- Astro (sitio estatico)
+- Content Collections (`projects`, `labs`)
+- Deploy en GitHub Pages con GitHub Actions
 
-### Portfolio tecnico como freelance DevOps especializado en automatización de infraestructura con **Terraform**, **CI/CD**, **Ansible**, **Docker** y despliegue en **CLoud**.
--------------------------------------------------------
+## Estructura actual
 
-### 🧰 Tecnologías principales
+- `src/pages/`
+  - Rutas principales ES/EN
+  - Listados y detalles dinamicos: `projects` y `labs`
+- `src/content/`
+  - `projects/*.md` (ficheros por proyecto, ES/EN)
+  - `labs/*.md` (ficheros por laboratorio, ES/EN)
+  - `config.ts` (schema)
+- `src/domain/portfolio/`
+  - Tipos, copy de UI, repositorio de lectura de contenido
+- `src/components/`
+  - Componentes visuales (`ProjectGrid`, `ProfileGate`, `FlowBackground`, etc.)
+- `src/styles/global.css`
+  - Estilos globales, animaciones de entrada y tema visual
+- `public/`
+  - Recursos publicos (`favicon.svg`, `og-image.svg`) usados por SEO/social cards
+- `.github/workflows/deploy.yml`
+  - Build y deploy automatico a GitHub Pages
 
-![Terraform](https://img.shields.io/badge/IaC-Terraform-5C4EE5) ![Ansible](https://img.shields.io/badge/Automation-Ansible-EE0000) ![Azure](https://img.shields.io/badge/Cloud-Azure-0078D4) ![GCP](https://img.shields.io/badge/Cloud-Google_Cloud-4285F4) ![Docker](https://img.shields.io/badge/Container-Docker-2496ED) ![CI/CD](https://img.shields.io/badge/Pipeline-CI%2FCD-2088FF) ![GitHub Actions](https://img.shields.io/badge/Automation-GitHub_Actions-2088FF) ![Grafana](https://img.shields.io/badge/Monitoring-Grafana-F46800) ![Prometheus](https://img.shields.io/badge/Metrics-Prometheus-E6522C)
+## Desarrollo local
 
----
+Requisitos:
+- Node.js 20+
 
-# ¿Cuales son los proyectos que he hecho?
+Comandos:
+- `npm install`
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
 
-### 🖥️ Proyecto: Servidor Automatizado Jellyfin
+## Como anadir contenido
 
-**Reto:** Crear un servidor multimedia 100% automatizado y reproducible sobre Azure.  
-**Solución:** Infraestructura IaC con Terraform + despliegue vía Ansible + pipeline GitHub Actions para rotar secretos y lanzar el playbook automáticamente.  
-**Impacto:** Despliegue completo en menos de 10 min y reducción de errores humanos.  
-**Stack:** Terraform · Ansible · Azure · Docker · GitHub Actions · WireGuard  
-**Código:** [Repositorio](https://github.com/S4M73l09/ProyectoServer)
+### Nuevo proyecto
+1. Crear `src/content/projects/<nombre>.es.md`
+2. Crear `src/content/projects/<nombre>.en.md`
+3. Usar el mismo `routeSlug` en ambos idiomas
 
----
+### Nuevo laboratorio
+1. Crear `src/content/labs/<nombre>.es.md`
+2. Crear `src/content/labs/<nombre>.en.md`
+3. Usar el mismo `routeSlug` en ambos idiomas
+4. Definir `provider`:
+   - `gcs` para Google Cloud
+   - `az` para Azure
 
-### 🧱 Proyecto: Scripts Dominio Windows Core
+Campos clave de frontmatter:
+- `lang`: `es` o `en`
+- `title`
+- `routeSlug`
+- `provider` (solo labs): `gcs` | `az`
+- `challenge`
+- `solution`
+- `impact`
+- `stack` (array)
+- `repo` (URL)
+- `featured` (boolean)
+- `order` (numero)
 
-**Reto:** Automatizar la creación de un dominio AD DS en Windows Server Core sin interfaz gráfica.  
-**Solución:** Scripts PowerShell modulares para instalación, configuración y unión automática de clientes al dominio.  
-**Impacto:** Simplificación del despliegue en entornos empresariales virtualizados.  
-**Stack:** PowerShell · Windows Server Core · Active Directory · DNS  
-**Código:** [Repositorio](https://github.com/S4M73l09/scripts-guia-windows)
+## Nota sobre UI/Animaciones
 
----
+La home incluye:
+- Pantalla de entrada tipo consola con perfil
+- Transicion de entrada sincronizada
+- Fondo tipo PS flow para el sitio
 
-### 🇬 Proyecto: Gcloud-Scripts (En curso)
+Navegacion actual:
+- Boton flotante izquierdo: volver a inicio
+- Boton flotante derecho: cambiar entre `Proyectos` y `Laboratorio`
+- Boton flotante superior derecho: cambio de idioma ES/EN
+- Laboratorio agrupado por provider (`GCS` / `AZ`) con selector lateral
+- Metadatos SEO/Open Graph/Twitter centralizados en `MainLayout`
 
-**Reto:** Automatizar la creacion de recursos necesarios para despliegue tanto en Scripts Powershell como Bash.  
-**Solucion:** Script Powershell con Wrapper, y Script Bash para entornos Linux. Todo en uno y con menu interactivo y personalizacion.  
-**Impacto:** Simplifica en un unico archivo la configuracion de diferentes recursos en Google Cloud + Creacion de maquina virtual Terraform y archivos varios.  
-**Stack:** Powershell · Bash · GCloud · Scripts · terraform · Linux · Automation · DevOps  
-**Código:** [Repositorio](https://github.com/S4M73l09/Gcloud-Script)  
-
-# Laboratorio de infraestructura.
-
-## Bootstrap/Infra-Live en GCS
-
-### 🅱️ Proyecto: Bootstrap en GCS.
-
-**Reto:** Crear la plantilla suficiente para el despliegue correcto y funcional de infraestructuras, separadas para asi no heredar fallos.  
-**Solucion:** Crear un Bootstrap con todo lo necesario y separarlo para usarlo en futuros proyectos o despliegues sin miedo a que falle ya que estan separados.  
-**Impacto:** Bootstrap separado de infra real y configurado para mejorar el despliegue.  
-**Stack:** OIDC · GCloud · Terraform · Github Actions  
-**Código:** [Repositorio](https://github.com/S4M73l09/GCS-Bootstrap---Live)  
-
-### ℹ️ Proyecto: Infra-Live en GCS
-
-**Reto:** Crear infraestructura pertinente usando el Bootstrap.  
-**Solucion:** Infraestructura usando el Bootstrap de intermediario.  
-**Impacto:** Simplifica la creacion, administracion y mejora de infraestructura, separando todo la infra real del Bootstrap en repositorios distintos.  
-**Stack:** Terraform · GCS · Docker · Ansible · Monitoring  
-**Código:** [Repositorio](https://github.com/S4M73l09/GCS-Infra-Live)  
-
----  
-
-### 📈 Impacto Global (Todos los Proyectos)
-
-| KPI | Antes | Después | Descripción |
-|------|--------|----------|--------------|
-| Tiempo de despliegue | ~45 min | ~10–12 min | Aplicación automática de cambios con CI/CD |
-| Intervención manual | Alta | Mínima | Automatización con Ansible y Terraform |
-| Coste de infraestructura | Alto (no optimizado) | ~25–30% menos | Recursos optimizados en Azure y GCP |
-| Mantenimiento operativo | Complejo, manual | Simplificado | Entornos más ágiles y fáciles de mantener |
-
----
+Todo esto se controla en:
+- `src/components/ProfileGate.astro`
+- `src/components/FlowBackground.astro`
+- `src/components/LabProviderAccordion.astro`
+- `src/styles/global.css`

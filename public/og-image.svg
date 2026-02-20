@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="S4M73l09 portfolio og image">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1648a6"/>
+      <stop offset="55%" stop-color="#0f3791"/>
+      <stop offset="100%" stop-color="#0a2a79"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#9fd3ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#9fd3ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#9fd3ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M-40 170 C 220 90, 460 240, 760 165 C 940 120, 1090 165, 1260 145" fill="none" stroke="#5ba8ff" stroke-opacity="0.3" stroke-width="18"/>
+  <path d="M-40 250 C 240 180, 500 320, 790 245 C 980 200, 1100 250, 1260 225" fill="none" stroke="#7ec4ff" stroke-opacity="0.28" stroke-width="14"/>
+  <path d="M-40 360 C 260 290, 520 430, 830 350 C 980 310, 1110 350, 1260 330" fill="none" stroke="#9cd4ff" stroke-opacity="0.2" stroke-width="12"/>
+  <rect x="0" y="82" width="1200" height="2" fill="url(#line)"/>
+  <rect x="0" y="544" width="1200" height="2" fill="url(#line)" opacity="0.5"/>
+
+  <g fill="#dcecff" font-family="Space Grotesk, Segoe UI, sans-serif">
+    <text x="92" y="238" font-size="88" font-weight="700">S4M73l09</text>
+    <text x="92" y="310" font-size="38" font-weight="500" fill="#c3ddff">DevOps and Cloud Infrastructure Portfolio</text>
+    <text x="92" y="380" font-size="28" fill="#b4d1f7">Terraform | Ansible | CI/CD | Prometheus | Grafana</text>
+  </g>
+</svg>

@@ -1,0 +1,38 @@
+---
+import type { Kpi } from '../domain/portfolio/types';
+
+interface Props {
+  rows: Kpi[];
+  headers: {
+    metric: string;
+    before: string;
+    after: string;
+    detail: string;
+  };
+}
+
+const { rows, headers } = Astro.props;
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>{headers.metric}</th>
+      <th>{headers.before}</th>
+      <th>{headers.after}</th>
+      <th>{headers.detail}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((row) => (
+        <tr>
+          <td>{row.metric}</td>
+          <td>{row.before}</td>
+          <td>{row.after}</td>
+          <td>{row.detail}</td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

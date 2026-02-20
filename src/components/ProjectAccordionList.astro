@@ -1,0 +1,52 @@
+---
+import type { PortfolioItem } from '../domain/portfolio/types';
+
+interface Props {
+  projects: PortfolioItem[];
+  detailBasePath: string;
+  labels?: {
+    challenge: string;
+    solution: string;
+    impact: string;
+    repository: string;
+    details: string;
+  };
+}
+
+const { projects, detailBasePath, labels } = Astro.props;
+const text = labels ?? {
+  challenge: 'Challenge',
+  solution: 'Solution',
+  impact: 'Impact',
+  repository: 'Repository',
+  details: 'Details'
+};
+
+const toBase = (path: string) => {
+  const cleanPath = path.replace(/^\/+/, '');
+  return `${import.meta.env.BASE_URL}${cleanPath}`.replace(/\/{2,}/g, '/');
+};
+---
+
+<div class="accordion-list">
+  {
+    projects.map((project) => (
+      <details class="accordion-item">
+        <summary>
+          <span class="accordion-title">{project.title}</span>
+          <span class="accordion-arrow" aria-hidden="true">▾</span>
+        </summary>
+        <div class="accordion-body">
+          <p><strong>{text.challenge}:</strong> {project.challenge}</p>
+          <p><strong>{text.solution}:</strong> {project.solution}</p>
+          <p><strong>{text.impact}:</strong> {project.impact}</p>
+          <p class="stack">{project.stack.join(' · ')}</p>
+          <div class="accordion-links">
+            <a class="cta" href={toBase(`${detailBasePath}/${project.slug}`)}>{text.details} →</a>
+            <a class="cta" href={project.repo} target="_blank" rel="noreferrer">{text.repository} ↗</a>
+          </div>
+        </div>
+      </details>
+    ))
+  }
+</div>

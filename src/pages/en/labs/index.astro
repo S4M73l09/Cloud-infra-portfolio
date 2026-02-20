@@ -1,0 +1,32 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import LabProviderAccordion from '../../../components/LabProviderAccordion.astro';
+import { getPortfolioContent, getPortfolioItems } from '../../../domain/portfolio';
+
+const contentEn = getPortfolioContent('en');
+const labs = await getPortfolioItems('labs', 'en');
+---
+
+<MainLayout
+  title="Infra Lab | S4M73l09"
+  description="Infrastructure experiments and patterns for bootstrap and live environments."
+  language="en"
+  pageEnterFromLeft={true}
+  showFloatingHomeButton={true}
+  floatingHomeHref="/en"
+  floatingHomeLabel="Home"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/en/projects"
+  floatingSectionLabel="Projects"
+  langSwitchHref="/labs"
+  langSwitchLabel={contentEn.langLabel}
+>
+  <section class="hero">
+    <h1>{contentEn.labsTitle}</h1>
+    <p>Infrastructure experiments and patterns for bootstrap and live environments.</p>
+  </section>
+
+  <section class="section">
+    <LabProviderAccordion labs={labs} language="en" />
+  </section>
+</MainLayout>

@@ -1,0 +1,123 @@
+---
+import type { LabProvider, PortfolioItem } from '../domain/portfolio/types';
+
+interface Props {
+  labs: PortfolioItem[];
+  language: 'es' | 'en';
+}
+
+const { labs, language } = Astro.props;
+
+const providers: { key: LabProvider; short: string; label: string }[] = [
+  { key: 'gcs', short: 'GCS', label: 'Google Cloud' },
+  { key: 'az', short: 'AZ', label: 'Azure' }
+];
+
+const grouped = providers.map((provider) => ({
+  ...provider,
+  items: labs.filter((lab) => (lab.provider ?? 'gcs') === provider.key)
+}));
+
+const totalLabs = labs.length;
+const defaultProvider = grouped.find((g) => g.items.length > 0)?.key ?? 'gcs';
+const toBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`.replace(/\/{2,}/g, '/');
+const basePath = language === 'es' ? '/labs' : '/en/labs';
+
+const txt =
+  language === 'es'
+    ? {
+        detail: 'Detalles',
+        repository: 'Repositorio',
+        emptyProvider: 'No hay laboratorios para este provider todavia.',
+        emptyAll: 'No hay laboratorios disponibles.'
+      }
+    : {
+        detail: 'Details',
+        repository: 'Repository',
+        emptyProvider: 'No labs for this provider yet.',
+        emptyAll: 'No labs available.'
+      };
+---
+
+{totalLabs === 0 ? (
+  <p class="footer">{txt.emptyAll}</p>
+) : (
+  <div class="provider-switcher" data-provider-switcher data-default-provider={defaultProvider}>
+    <aside class="provider-nav" role="tablist" aria-label="Cloud providers">
+      {
+        grouped.map((provider) => (
+          <button
+            type="button"
+            class="provider-tab"
+            data-provider-tab={provider.key}
+            role="tab"
+            aria-selected={provider.key === defaultProvider ? 'true' : 'false'}
+          >
+            <span class="provider-code">{provider.short}</span>
+            <span class="provider-label">{provider.label}</span>
+            <span class="provider-count">{provider.items.length}</span>
+          </button>
+        ))
+      }
+    </aside>
+
+    <div class="provider-content">
+      {
+        grouped.map((provider) => (
+          <section
+            class={`provider-panel${provider.key === defaultProvider ? ' is-active' : ''}`}
+            data-provider-panel={provider.key}
+            role="tabpanel"
+          >
+            {provider.items.length === 0 ? (
+              <p>{txt.emptyProvider}</p>
+            ) : (
+              <div class="provider-list">
+                {provider.items.map((item) => (
+                  <article class="provider-lab-row">
+                    <h3>{item.title}</h3>
+                    <p>{item.impact}</p>
+                    <p class="stack">{item.stack.join(' · ')}</p>
+                    <div class="accordion-links">
+                      <a class="cta" href={toBase(`${basePath}/${item.slug}`)}>{txt.detail} →</a>
+                      <a class="cta" href={item.repo} target="_blank" rel="noreferrer">{txt.repository} ↗</a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
+        ))
+      }
+    </div>
+  </div>
+)}
+
+<script>
+  const root = document.querySelector('[data-provider-switcher]');
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll('[data-provider-tab]'));
+    const panels = Array.from(root.querySelectorAll('[data-provider-panel]'));
+    const activate = (provider) => {
+      tabs.forEach((tab) => {
+        const match = tab.getAttribute('data-provider-tab') === provider;
+        tab.classList.toggle('is-active', match);
+        tab.setAttribute('aria-selected', match ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        const match = panel.getAttribute('data-provider-panel') === provider;
+        panel.classList.toggle('is-active', match);
+      });
+    };
+
+    const defaultProvider = root.getAttribute('data-default-provider') || 'gcs';
+    activate(defaultProvider);
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const provider = tab.getAttribute('data-provider-tab') || 'gcs';
+        activate(provider);
+      });
+    });
+  }
+</script>

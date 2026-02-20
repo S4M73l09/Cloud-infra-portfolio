@@ -1,0 +1,111 @@
+---
+interface Props {
+  profileName: string;
+  avatarUrl: string;
+  enterLabel: string;
+  promptLabel: string;
+  storageKey?: string;
+}
+
+const {
+  profileName,
+  avatarUrl,
+  enterLabel,
+  promptLabel,
+  storageKey = 'portfolio-profile-gate-entered'
+} = Astro.props;
+
+const particles = Array.from({ length: 22 }, (_, index) => {
+  const seed = index + 1;
+  return {
+    x: `${(seed * 13) % 100}%`,
+    y: `${(seed * 17) % 100}%`,
+    delay: `${(seed % 9) * 0.35}s`,
+    duration: `${8 + (seed % 7)}s`,
+    size: `${2 + (seed % 3)}px`
+  };
+});
+---
+
+<div class="profile-gate" data-profile-gate data-storage-key={storageKey}>
+  <div class="profile-gate-bg" aria-hidden="true">
+    <div class="gate-orb gate-orb-a"></div>
+    <div class="gate-orb gate-orb-b"></div>
+    <div class="gate-orb gate-orb-c"></div>
+    <div class="gate-wave gate-wave-a"></div>
+    <div class="gate-wave gate-wave-b"></div>
+    <div class="gate-particles">
+      {
+        particles.map((particle) => (
+          <span
+            class="gate-particle"
+            style={`--x:${particle.x};--y:${particle.y};--delay:${particle.delay};--duration:${particle.duration};--size:${particle.size};`}
+          />
+        ))
+      }
+    </div>
+  </div>
+
+  <button class="profile-gate-card" type="button" aria-label={enterLabel}>
+    <img class="profile-gate-avatar" src={avatarUrl} alt={profileName} loading="eager" />
+    <span class="profile-gate-name">{profileName}</span>
+    <span class="profile-gate-prompt">{promptLabel}</span>
+  </button>
+</div>
+
+<script>
+  const gate = document.querySelector('[data-profile-gate]');
+  if (gate) {
+    const storageKey = gate.getAttribute('data-storage-key') || 'portfolio-profile-gate-entered';
+    const homeRevealKey = 'portfolio-home-reveal';
+    document.body.classList.remove('is-enter-ready');
+    const revealDelayMs = 80;
+    const showGate = () => {
+      gate.classList.remove('is-hidden');
+      gate.classList.add('is-active');
+    };
+
+    const hideGate = (deferReveal = false, triggerWhoami = false) => {
+      gate.classList.add('is-hidden');
+      gate.classList.remove('is-active');
+      const release = () => {
+        document.body.classList.remove('has-profile-gate');
+        if (triggerWhoami) {
+          document.body.classList.add('is-enter-ready');
+        }
+      };
+      if (deferReveal) {
+        window.setTimeout(release, revealDelayMs);
+        return;
+      }
+      release();
+    };
+
+    if (sessionStorage.getItem(storageKey) === 'true') {
+      const shouldRevealHome = sessionStorage.getItem(homeRevealKey) === 'true';
+      if (shouldRevealHome) {
+        sessionStorage.removeItem(homeRevealKey);
+      }
+      hideGate(false, shouldRevealHome);
+    } else {
+      showGate();
+      document.body.classList.add('has-profile-gate');
+      const trigger = gate.querySelector('.profile-gate-card');
+      let isTransitioning = false;
+      const pulseDurationMs = 400;
+      const gateExitDurationMs = 420;
+      trigger?.addEventListener('click', () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        gate.classList.add('is-pulsing');
+
+        window.setTimeout(() => {
+          gate.classList.remove('is-pulsing');
+          gate.classList.add('is-entering');
+        }, pulseDurationMs);
+        sessionStorage.setItem(storageKey, 'true');
+        window.setTimeout(() => hideGate(true, true), pulseDurationMs + gateExitDurationMs);
+      });
+    }
+  }
+</script>

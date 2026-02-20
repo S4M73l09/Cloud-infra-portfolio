@@ -1,0 +1,32 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import ProjectAccordionList from '../../../components/ProjectAccordionList.astro';
+import { getPortfolioContent, getPortfolioItems } from '../../../domain/portfolio';
+
+const contentEn = getPortfolioContent('en');
+const projects = await getPortfolioItems('projects', 'en');
+---
+
+<MainLayout
+  title="Projects | S4M73l09"
+  description="Complete list of infrastructure and automation projects."
+  language="en"
+  langSwitchHref="/projects"
+  langSwitchLabel={contentEn.langLabel}
+  pageEnterFromLeft={true}
+  showFloatingHomeButton={true}
+  floatingHomeHref="/en"
+  floatingHomeLabel="Home"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/en/labs"
+  floatingSectionLabel="Lab"
+>
+  <section class="hero">
+    <h1>{contentEn.projectsLabel}</h1>
+    <p>Complete list of infrastructure and automation projects.</p>
+  </section>
+
+  <section class="section">
+    <ProjectAccordionList projects={projects} labels={contentEn.cardLabels} detailBasePath="/en/projects" />
+  </section>
+</MainLayout>

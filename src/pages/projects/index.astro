@@ -1,0 +1,32 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import ProjectAccordionList from '../../components/ProjectAccordionList.astro';
+import { getPortfolioContent, getPortfolioItems } from '../../domain/portfolio';
+
+const contentEs = getPortfolioContent('es');
+const projects = await getPortfolioItems('projects', 'es');
+---
+
+<MainLayout
+  title="Proyectos | S4M73l09"
+  description="Listado completo de proyectos de automatizacion e infraestructura cloud."
+  language="es"
+  langSwitchHref="/en/projects"
+  langSwitchLabel={contentEs.langLabel}
+  pageEnterFromLeft={true}
+  showFloatingHomeButton={true}
+  floatingHomeHref="/"
+  floatingHomeLabel="Inicio"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/labs"
+  floatingSectionLabel="Laboratorio"
+>
+  <section class="hero">
+    <h1>{contentEs.projectsLabel}</h1>
+    <p>Listado completo de proyectos de automatizacion e infraestructura cloud.</p>
+  </section>
+
+  <section class="section">
+    <ProjectAccordionList projects={projects} labels={contentEs.cardLabels} detailBasePath="/projects" />
+  </section>
+</MainLayout>

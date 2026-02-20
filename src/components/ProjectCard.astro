@@ -1,0 +1,34 @@
+---
+import type { PortfolioItem } from '../domain/portfolio/types';
+
+interface Props {
+  project: PortfolioItem;
+  detailHref?: string;
+  labels?: {
+    challenge: string;
+    solution: string;
+    impact: string;
+    repository: string;
+    details: string;
+  };
+}
+
+const { project, detailHref, labels } = Astro.props;
+const text = labels ?? {
+  challenge: 'Challenge',
+  solution: 'Solution',
+  impact: 'Impact',
+  repository: 'Repository',
+  details: 'Details'
+};
+---
+
+<article class="card">
+  <h3>{project.title}</h3>
+  <p><strong>{text.challenge}:</strong> {project.challenge}</p>
+  <p><strong>{text.solution}:</strong> {project.solution}</p>
+  <p><strong>{text.impact}:</strong> {project.impact}</p>
+  <p class="stack">{project.stack.join(' · ')}</p>
+  {detailHref && <a class="cta" href={detailHref}>{text.details} →</a>}
+  <a class="cta" href={project.repo} target="_blank" rel="noreferrer">{text.repository} ↗</a>
+</article>

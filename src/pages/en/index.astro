@@ -1,0 +1,44 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getPortfolioContent } from '../../domain/portfolio';
+
+const contentEn = getPortfolioContent('en');
+const toBase = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`.replace(/\/{2,}/g, '/');
+---
+
+<MainLayout
+  title={contentEn.title}
+  description={contentEn.intro}
+  language="en"
+  langSwitchHref="/"
+  langSwitchLabel={contentEn.langLabel}
+  homeHref="/en"
+  homeLabel={contentEn.homeLabel}
+  projectsHref="/en/projects"
+  projectsLabel={contentEn.projectsLabel}
+  labsHref="/en/labs"
+  labsLabel={contentEn.labsLabel}
+  showProfileGate={true}
+  profileName="S4M73l09"
+  profileAvatarUrl="https://github.com/S4M73l09.png"
+  profileEnterLabel="Enter portfolio"
+  profilePromptLabel="Click to enter"
+>
+  <section class="whoami-shell">
+    <p class="whoami-tag">WHO I AM</p>
+    <h1 class="whoami-title">S4M73l09</h1>
+    <div class="whoami-actions">
+      <a class="whoami-btn" href={toBase('/en/projects')}>Projects</a>
+      <a class="whoami-btn" href={toBase('/en/labs')}>Lab</a>
+    </div>
+    <article class="whoami-bubble">
+      <p>{contentEn.intro}</p>
+      <p>
+        Contact:
+        <a class="inline-link" href="https://github.com/S4M73l09" target="_blank" rel="noreferrer">
+          GitHub @S4M73l09
+        </a>
+      </p>
+    </article>
+  </section>
+</MainLayout>

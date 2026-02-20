@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getPortfolioContent } from '../../domain/portfolio';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('labs', ({ data }) => data.lang === 'es');
+
+  return entries.map((entry) => ({
+    params: { slug: entry.data.routeSlug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const contentEs = getPortfolioContent('es');
+---
+
+<MainLayout
+  title={`${entry.data.title} | Laboratorio`}
+  description={entry.data.challenge}
+  language="es"
+  showFloatingHomeButton={true}
+  floatingHomeHref="/"
+  floatingHomeLabel="Inicio"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/projects"
+  floatingSectionLabel="Proyectos"
+  langSwitchHref={`/en/labs/${entry.data.routeSlug}`}
+  langSwitchLabel={contentEs.langLabel}
+  homeHref="/"
+  homeLabel={contentEs.homeLabel}
+  projectsHref="/projects"
+  projectsLabel={contentEs.projectsLabel}
+  labsHref="/labs"
+  labsLabel={contentEs.labsLabel}
+>
+  <section class="hero">
+    <h1>{entry.data.title}</h1>
+    <p><strong>{contentEs.cardLabels.challenge}:</strong> {entry.data.challenge}</p>
+    <p><strong>{contentEs.cardLabels.solution}:</strong> {entry.data.solution}</p>
+    <p><strong>{contentEs.cardLabels.impact}:</strong> {entry.data.impact}</p>
+  </section>
+
+  <section class="section card">
+    <p class="stack">{entry.data.stack.join(' · ')}</p>
+    <a class="cta" href={entry.data.repo} target="_blank" rel="noreferrer">{contentEs.cardLabels.repository} ↗</a>
+  </section>
+
+  <section class="section card">
+    <Content />
+  </section>
+</MainLayout>

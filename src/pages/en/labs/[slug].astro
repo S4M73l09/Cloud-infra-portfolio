@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { getPortfolioContent } from '../../../domain/portfolio';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('labs', ({ data }) => data.lang === 'en');
+
+  return entries.map((entry) => ({
+    params: { slug: entry.data.routeSlug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const contentEn = getPortfolioContent('en');
+---
+
+<MainLayout
+  title={`${entry.data.title} | Infra Lab`}
+  description={entry.data.challenge}
+  language="en"
+  showFloatingHomeButton={true}
+  floatingHomeHref="/en"
+  floatingHomeLabel="Home"
+  showFloatingSectionButton={true}
+  floatingSectionHref="/en/projects"
+  floatingSectionLabel="Projects"
+  langSwitchHref={`/labs/${entry.data.routeSlug}`}
+  langSwitchLabel={contentEn.langLabel}
+  homeHref="/en"
+  homeLabel={contentEn.homeLabel}
+  projectsHref="/en/projects"
+  projectsLabel={contentEn.projectsLabel}
+  labsHref="/en/labs"
+  labsLabel={contentEn.labsLabel}
+>
+  <section class="hero">
+    <h1>{entry.data.title}</h1>
+    <p><strong>{contentEn.cardLabels.challenge}:</strong> {entry.data.challenge}</p>
+    <p><strong>{contentEn.cardLabels.solution}:</strong> {entry.data.solution}</p>
+    <p><strong>{contentEn.cardLabels.impact}:</strong> {entry.data.impact}</p>
+  </section>
+
+  <section class="section card">
+    <p class="stack">{entry.data.stack.join(' · ')}</p>
+    <a class="cta" href={entry.data.repo} target="_blank" rel="noreferrer">{contentEn.cardLabels.repository} ↗</a>
+  </section>
+
+  <section class="section card">
+    <Content />
+  </section>
+</MainLayout>

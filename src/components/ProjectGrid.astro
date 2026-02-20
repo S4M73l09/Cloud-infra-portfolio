@@ -1,0 +1,36 @@
+---
+import type { PortfolioItem } from '../domain/portfolio/types';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  projects: PortfolioItem[];
+  limit?: number;
+  detailBasePath?: string;
+  labels?: {
+    challenge: string;
+    solution: string;
+    impact: string;
+    repository: string;
+    details: string;
+  };
+}
+
+const { projects, limit, detailBasePath, labels } = Astro.props;
+const selected = typeof limit === 'number' ? projects.slice(0, limit) : projects;
+const toBase = (path: string) => {
+  const cleanPath = path.replace(/^\/+/, '');
+  return `${import.meta.env.BASE_URL}${cleanPath}`.replace(/\/{2,}/g, '/');
+};
+---
+
+<div class="grid">
+  {
+    selected.map((project) => (
+      <ProjectCard
+        project={project}
+        detailHref={detailBasePath ? toBase(`${detailBasePath}/${project.slug}`) : undefined}
+        labels={labels}
+      />
+    ))
+  }
+</div>

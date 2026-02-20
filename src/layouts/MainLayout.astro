@@ -1,0 +1,149 @@
+---
+import '../styles/global.css';
+import ProfileGate from '../components/ProfileGate.astro';
+import FlowBackground from '../components/FlowBackground.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  language?: string;
+  langSwitchHref?: string;
+  langSwitchLabel?: string;
+  homeHref?: string;
+  homeLabel?: string;
+  projectsHref?: string;
+  projectsLabel?: string;
+  labsHref?: string;
+  labsLabel?: string;
+  showProfileGate?: boolean;
+  profileName?: string;
+  profileAvatarUrl?: string;
+  profileEnterLabel?: string;
+  profilePromptLabel?: string;
+  showFloatingHomeButton?: boolean;
+  floatingHomeHref?: string;
+  floatingHomeLabel?: string;
+  showFloatingSectionButton?: boolean;
+  floatingSectionHref?: string;
+  floatingSectionLabel?: string;
+  pageEnterFromLeft?: boolean;
+  ogImagePath?: string;
+}
+
+const {
+  title,
+  description = 'DevOps and Cloud Infrastructure portfolio by S4M73l09.',
+  language = 'en',
+  langSwitchHref = '',
+  langSwitchLabel = '',
+  showProfileGate = false,
+  profileName = '',
+  profileAvatarUrl = '',
+  profileEnterLabel = 'Enter',
+  profilePromptLabel = 'Click to enter',
+  showFloatingHomeButton = false,
+  floatingHomeHref = '/',
+  floatingHomeLabel = 'Home',
+  showFloatingSectionButton = false,
+  floatingSectionHref = '/',
+  floatingSectionLabel = '',
+  pageEnterFromLeft = false,
+  ogImagePath = '/og-image.svg'
+} = Astro.props;
+
+const toBase = (path: string) => {
+  const cleanPath = path.replace(/^\/+/, '');
+  const base = import.meta.env.BASE_URL;
+  return `${base}${cleanPath}`.replace(/\/{2,}/g, '/');
+};
+
+const bodyClass = [
+  showProfileGate ? 'has-profile-gate' : '',
+  pageEnterFromLeft ? 'page-enter-left' : ''
+]
+  .filter(Boolean)
+  .join(' ');
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const ogImageUrl = new URL(toBase(ogImagePath), Astro.site ?? Astro.url).toString();
+---
+
+<!doctype html>
+<html lang={language}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="S4M73l09 Portfolio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={language === 'es' ? 'es_ES' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href={toBase('/favicon.svg')} />
+    <title>{title}</title>
+  </head>
+  <body class={bodyClass || undefined}>
+    <div class="ps4-bg" aria-hidden="true">
+      <FlowBackground />
+      <span class="ps4-hline ps4-hline-top"></span>
+      <span class="ps4-hline ps4-hline-bottom"></span>
+    </div>
+    {
+      showProfileGate && (
+        <ProfileGate
+          profileName={profileName}
+          avatarUrl={profileAvatarUrl}
+          enterLabel={profileEnterLabel}
+          promptLabel={profilePromptLabel}
+        />
+      )
+    }
+    {
+      showFloatingHomeButton && (
+        <a
+          class="floating-home"
+          href={toBase(floatingHomeHref)}
+          data-floating-home
+          data-home-reveal-key="portfolio-home-reveal"
+        >
+          ← {floatingHomeLabel}
+        </a>
+      )
+    }
+    {
+      showFloatingSectionButton && floatingSectionLabel && (
+        <a class="floating-section" href={toBase(floatingSectionHref)}>
+          {floatingSectionLabel} →
+        </a>
+      )
+    }
+    {
+      langSwitchHref && langSwitchLabel && (
+        <a class="floating-lang" href={toBase(langSwitchHref)}>
+          {langSwitchLabel}
+        </a>
+      )
+    }
+    <main class="container">
+      <slot />
+    </main>
+    <script>
+      const floatingHome = document.querySelector('[data-floating-home]');
+      if (floatingHome) {
+        floatingHome.addEventListener('click', () => {
+          const revealKey = floatingHome.getAttribute('data-home-reveal-key') || 'portfolio-home-reveal';
+          sessionStorage.setItem(revealKey, 'true');
+        });
+      }
+    </script>
+  </body>
+</html>
