@@ -18,8 +18,9 @@ interface Props {
 const { projects, limit, detailBasePath, labels } = Astro.props;
 const selected = typeof limit === 'number' ? projects.slice(0, limit) : projects;
 const toBase = (path: string) => {
+  const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
   const cleanPath = path.replace(/^\/+/, '');
-  return `${import.meta.env.BASE_URL}${cleanPath}`.replace(/\/{2,}/g, '/');
+  return `${base}/${cleanPath}`.replace(/\/{2,}/g, '/');
 };
 ---
 
