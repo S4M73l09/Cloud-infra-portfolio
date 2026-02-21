@@ -84,9 +84,22 @@ Navegacion actual:
 - Boton flotante superior derecho: cambio de idioma ES/EN
 - Laboratorio agrupado por provider (`GCS` / `AZ`) con selector lateral
 - Metadatos SEO/Open Graph/Twitter centralizados en `MainLayout`
+- `sitemap.xml` y `robots.txt` generados desde `src/pages/`
+- Pagina `404.astro` personalizada con el mismo tema visual
 
 Todo esto se controla en:
 - `src/components/ProfileGate.astro`
 - `src/components/FlowBackground.astro`
 - `src/components/LabProviderAccordion.astro`
 - `src/styles/global.css`
+
+## Hardening aplicado
+
+- SEO tecnico:
+  - `src/pages/sitemap.xml.ts` genera `sitemap.xml` con rutas estaticas y dinamicas.
+  - `src/pages/robots.txt.ts` genera `robots.txt` y referencia al sitemap.
+- Errores/UX:
+  - `src/pages/404.astro` define un 404 custom con el mismo visual de la web.
+- Performance inicial:
+  - Se elimino `@import` de Google Fonts en CSS.
+  - Las fuentes se cargan desde `MainLayout` con `preconnect` a `fonts.googleapis.com` y `fonts.gstatic.com`.

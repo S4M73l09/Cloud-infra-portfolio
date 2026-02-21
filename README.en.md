@@ -84,9 +84,22 @@ Current navigation:
 - Top-right floating button: ES/EN language switch
 - Lab page grouped by provider (`GCS` / `AZ`) with side selector
 - SEO/Open Graph/Twitter metadata centralized in `MainLayout`
+- `sitemap.xml` and `robots.txt` generated from `src/pages/`
+- Custom themed `404.astro` page
 
 Managed in:
 - `src/components/ProfileGate.astro`
 - `src/components/FlowBackground.astro`
 - `src/components/LabProviderAccordion.astro`
 - `src/styles/global.css`
+
+## Hardening applied
+
+- Technical SEO:
+  - `src/pages/sitemap.xml.ts` generates `sitemap.xml` with static and dynamic routes.
+  - `src/pages/robots.txt.ts` generates `robots.txt` and points to the sitemap.
+- Error/UX:
+  - `src/pages/404.astro` defines a custom themed 404 page.
+- Initial performance:
+  - Removed Google Fonts `@import` from CSS.
+  - Fonts now load in `MainLayout` with `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com`.
