@@ -11,7 +11,7 @@ export const contentEs: HomeContent = {
   labsLinkLabel: 'Ver laboratorio de infraestructuras',
   title: 'Samuel | DevOps & Cloud Infrastructure',
   intro:
-    'Soy Samuel. Automatizo infraestructura con Terraform y Ansible, despliegues con CI/CD y observabilidad con Prometheus/Grafana. Trabajo para que cada entorno sea reproducible, seguro y documentado.',
+    'Soy Samuel. Automatizo infraestructura con Terraform e IaC, Ansible y despliegues CI/CD. También aplico prácticas DevSecOps con Trivy, Checkov y OPA/Conftest. Trabajo con Docker, Kubernetes y entornos cloud como Azure y GCP para crear sistemas reproducibles, seguros y documentados.',
   contact: 'Contacto: GitHub @S4M73l09',
   technologiesTitle: 'Tecnologías principales',
   projectsTitle: 'Proyectos destacados',

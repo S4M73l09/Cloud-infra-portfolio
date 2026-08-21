@@ -27,6 +27,7 @@ interface Props {
   floatingSectionHref?: string;
   floatingSectionLabel?: string;
   pageEnterFromLeft?: boolean;
+  blurBackground?: boolean;
   ogImagePath?: string;
 }
 
@@ -48,6 +49,7 @@ const {
   floatingSectionHref = '/',
   floatingSectionLabel = '',
   pageEnterFromLeft = false,
+  blurBackground = false,
   ogImagePath = '/og-image.svg'
 } = Astro.props;
 
@@ -59,7 +61,9 @@ const toBase = (path: string) => {
 
 const bodyClass = [
   showProfileGate ? 'has-profile-gate' : '',
-  pageEnterFromLeft ? 'page-enter-left' : ''
+  showProfileGate ? 'await-profile-entry' : '',
+  pageEnterFromLeft ? 'page-enter-left' : '',
+  blurBackground ? 'background-blur' : ''
 ]
   .filter(Boolean)
   .join(' ');
@@ -77,9 +81,17 @@ const ogImageUrl = new URL(toBase(ogImagePath), Astro.site ?? Astro.url).toStrin
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      />
+    </noscript>
     <meta name="description" content={description} />
     <meta name="robots" content="index,follow" />
     <meta property="og:type" content="website" />

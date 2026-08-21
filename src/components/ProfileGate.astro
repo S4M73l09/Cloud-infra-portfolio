@@ -25,6 +25,14 @@ const particles = Array.from({ length: 22 }, (_, index) => {
     size: `${2 + (seed % 3)}px`
   };
 });
+
+const codeStreams = Array.from({ length: 24 }, (_, index) => ({
+  x: `${(index * 17 + 3) % 100}%`,
+  delay: `${-((index * 0.73) % 9)}s`,
+  duration: `${8 + (index % 6)}s`,
+  opacity: `${0.18 + (index % 5) * 0.06}`,
+  digits: Array.from({ length: 28 }, (_, digitIndex) => (index * 7 + digitIndex * 3) % 10)
+}));
 ---
 
 <div class="profile-gate" data-profile-gate data-storage-key={storageKey}>
@@ -34,6 +42,18 @@ const particles = Array.from({ length: 22 }, (_, index) => {
     <div class="gate-orb gate-orb-c"></div>
     <div class="gate-wave gate-wave-a"></div>
     <div class="gate-wave gate-wave-b"></div>
+    <div class="gate-code-rain">
+      {
+        codeStreams.map((stream) => (
+          <div
+            class="gate-code-stream"
+            style={`--x:${stream.x};--delay:${stream.delay};--duration:${stream.duration};--stream-opacity:${stream.opacity};`}
+          >
+            {stream.digits.map((digit) => <span>{digit}</span>)}
+          </div>
+        ))
+      }
+    </div>
     <div class="gate-particles">
       {
         particles.map((particle) => (
@@ -70,6 +90,9 @@ const particles = Array.from({ length: 22 }, (_, index) => {
       gate.classList.remove('is-active');
       const release = () => {
         document.body.classList.remove('has-profile-gate');
+        document.body.classList.remove('await-profile-entry');
+        document.body.classList.add('intro-complete');
+        document.dispatchEvent(new CustomEvent('portfolio:intro-complete'));
         if (triggerWhoami) {
           document.body.classList.add('is-enter-ready');
         }
@@ -94,6 +117,44 @@ const particles = Array.from({ length: 22 }, (_, index) => {
       let isTransitioning = false;
       const pulseDurationMs = 400;
       const gateExitDurationMs = 420;
+      let hoverGlitchTimer;
+      let hoverGlitchReleaseTimer;
+
+      const scheduleHoverGlitch = () => {
+        window.clearTimeout(hoverGlitchTimer);
+        hoverGlitchTimer = window.setTimeout(() => {
+          if (!trigger?.classList.contains('is-hovering')) return;
+          trigger.classList.add('is-hover-glitch');
+          window.clearTimeout(hoverGlitchReleaseTimer);
+          hoverGlitchReleaseTimer = window.setTimeout(() => {
+            trigger.classList.remove('is-hover-glitch');
+            scheduleHoverGlitch();
+          }, 120 + Math.random() * 170);
+        }, 900 + Math.random() * 2200);
+      };
+
+      trigger?.addEventListener('mouseenter', () => {
+        trigger.classList.add('is-hovering');
+        scheduleHoverGlitch();
+      });
+      trigger?.addEventListener('mousemove', (event) => {
+        const bounds = trigger.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+        trigger.style.setProperty('--tilt-x', `${x * 4}deg`);
+        trigger.style.setProperty('--tilt-y', `${y * -4}deg`);
+        trigger.style.setProperty('--parallax-x', `${x * 3}px`);
+        trigger.style.setProperty('--parallax-y', `${y * 3}px`);
+      });
+      trigger?.addEventListener('mouseleave', () => {
+        trigger.classList.remove('is-hovering', 'is-hover-glitch');
+        window.clearTimeout(hoverGlitchTimer);
+        window.clearTimeout(hoverGlitchReleaseTimer);
+        trigger.style.removeProperty('--tilt-x');
+        trigger.style.removeProperty('--tilt-y');
+        trigger.style.removeProperty('--parallax-x');
+        trigger.style.removeProperty('--parallax-y');
+      });
       trigger?.addEventListener('click', () => {
         if (isTransitioning) return;
         isTransitioning = true;
