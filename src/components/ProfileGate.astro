@@ -119,6 +119,53 @@ const codeStreams = Array.from({ length: 24 }, (_, index) => ({
       const gateExitDurationMs = 420;
       let hoverGlitchTimer;
       let hoverGlitchReleaseTimer;
+      let introGlitchTimer;
+      let introGlitchReleaseTimer;
+
+      const startIntroGlitchWindow = () => {
+        if (!gate.classList.contains('is-active')) return;
+        const windowEnd = performance.now() + 5000 + Math.random() * 10000;
+        const pulseCount = 1 + Math.floor(Math.random() * 5);
+        let pulseIndex = 0;
+
+        const triggerPulse = () => {
+          if (!gate.classList.contains('is-active')) return;
+          const remainingWindow = windowEnd - performance.now();
+          if (pulseIndex >= pulseCount || remainingWindow <= 0) {
+            document.body.classList.remove('glitch-active');
+            introGlitchTimer = window.setTimeout(startIntroGlitchWindow, 10000);
+            return;
+          }
+
+          pulseIndex += 1;
+          document.body.classList.add('glitch-active');
+          window.clearTimeout(introGlitchReleaseTimer);
+          introGlitchReleaseTimer = window.setTimeout(() => {
+            document.body.classList.remove('glitch-active');
+          }, 180 + Math.random() * 260);
+
+          const nextPulseDelay = Math.min(
+            remainingWindow,
+            650 + Math.random() * Math.max(650, remainingWindow / Math.max(1, pulseCount - pulseIndex + 1))
+          );
+          introGlitchTimer = window.setTimeout(triggerPulse, nextPulseDelay);
+        };
+
+        triggerPulse();
+      };
+
+      const scheduleIntroGlitch = () => {
+        window.clearTimeout(introGlitchTimer);
+        introGlitchTimer = window.setTimeout(startIntroGlitchWindow, 5000 + Math.random() * 10000);
+      };
+
+      const stopIntroGlitch = () => {
+        window.clearTimeout(introGlitchTimer);
+        window.clearTimeout(introGlitchReleaseTimer);
+        document.body.classList.remove('glitch-active');
+      };
+
+      scheduleIntroGlitch();
 
       const scheduleHoverGlitch = () => {
         window.clearTimeout(hoverGlitchTimer);
@@ -158,6 +205,7 @@ const codeStreams = Array.from({ length: 24 }, (_, index) => ({
       trigger?.addEventListener('click', () => {
         if (isTransitioning) return;
         isTransitioning = true;
+        stopIntroGlitch();
         gate.classList.add('is-pulsing');
 
         window.setTimeout(() => {
