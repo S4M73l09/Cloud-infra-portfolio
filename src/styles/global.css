@@ -49,6 +49,8 @@ a {
   pointer-events: none;
   overflow: hidden;
   background: #010203;
+  contain: strict;
+  isolation: isolate;
 }
 
 .ps4-bg::before {
@@ -81,6 +83,8 @@ a {
   color: rgba(242, 246, 243, 0.9);
   text-shadow: 0 0 14px rgba(242, 246, 243, 0.18);
   transition: filter 360ms ease, opacity 360ms ease, transform 360ms ease;
+  contain: strict;
+  isolation: isolate;
 }
 
 /* CRT/VHS texture kept above the canvas so the signal feels recorded. */
@@ -132,6 +136,7 @@ body.glitch-active .ascii-city::after {
   height: 100%;
   opacity: 0.92;
   filter: saturate(0.9) contrast(1.04);
+  will-change: transform;
 }
 
 body.background-blur .ascii-city {
@@ -884,6 +889,12 @@ body.is-enter-ready .whoami-bubble p {
   inset: 0;
   overflow: hidden;
   background: #010302;
+  contain: strict;
+}
+
+body.glitch-active .profile-gate-bg,
+body.glitch-active .profile-gate-card {
+  will-change: transform, filter;
 }
 
 .profile-gate-bg::before,

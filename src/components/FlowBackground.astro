@@ -39,6 +39,9 @@
       let glitchSchedule;
       let animationStarted = !document.body.classList.contains('await-profile-entry');
       let isMobileViewport = window.innerWidth <= 720;
+      let lowQualityMode = document.body.classList.contains('background-blur') || isMobileViewport;
+      let lastLowQualityFrame = 0;
+      let previousCorruption = false;
 
       const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -79,6 +82,7 @@
         const renderScale = document.body.classList.contains('background-blur')
           ? isMobileViewport ? 0.52 : 0.68
           : isMobileViewport ? 0.72 : 1;
+        lowQualityMode = document.body.classList.contains('background-blur') || isMobileViewport;
         canvas.width = Math.floor(width * renderScale);
         canvas.height = Math.floor(height * renderScale);
         context.setTransform(renderScale, 0, 0, renderScale, 0, 0);
@@ -136,8 +140,13 @@
         if (!animationStarted) {
           return;
         }
+        if (lowQualityMode && timestamp - lastLowQualityFrame < 1000 / 48) {
+          requestAnimationFrame(draw);
+          return;
+        }
+        lastLowQualityFrame = timestamp;
         const elapsed = (timestamp - start) / 1000;
-        const lowQuality = document.body.classList.contains('background-blur') || isMobileViewport;
+        const lowQuality = lowQualityMode;
         if (elapsed >= glitchSchedule.restEnd) {
           scheduleIndex += 1;
           glitchSchedule = createGlitchSchedule(glitchSchedule.restEnd);
@@ -149,7 +158,10 @@
         const corruptionProgress = activePulse
           ? clamp((elapsed - activePulse.start) / (activePulse.end - activePulse.start), 0, 1)
           : 0;
-        document.body.classList.toggle('glitch-active', fullCorruption);
+        if (fullCorruption !== previousCorruption) {
+          document.body.classList.toggle('glitch-active', fullCorruption);
+          previousCorruption = fullCorruption;
+        }
         const globalShake = fullCorruption ? (1 - corruptionProgress) * 5 : 0;
         const globalShakeX = globalShake ? (random(Math.floor(timestamp / 19)) - 0.5) * globalShake : 0;
         const globalShakeY = globalShake ? (random(Math.floor(timestamp / 23) + 13) - 0.5) * globalShake : 0;
@@ -202,8 +214,10 @@
           context.restore();
         };
 
-        for (let tileX = -networkTileWidth; tileX <= width + networkTileWidth; tileX += networkTileWidth) {
-          for (let tileY = -networkTileHeight; tileY <= height + networkTileHeight; tileY += networkTileHeight) {
+        const tilePaddingX = lowQuality ? 0 : networkTileWidth;
+        const tilePaddingY = lowQuality ? 0 : networkTileHeight;
+        for (let tileX = -networkTileWidth; tileX <= width + tilePaddingX; tileX += networkTileWidth) {
+          for (let tileY = -networkTileHeight; tileY <= height + tilePaddingY; tileY += networkTileHeight) {
             drawNetwork(tileX, tileY, null);
           }
         }
